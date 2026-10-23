@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nallamilli Purnima | AI & Software Engineer</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        jet: {
+                            DEFAULT: '#0a0a0c',
+                            card: '#121216',
+                            hover: '#1a1a22',
+                            border: '#222230'
+                        },
+                        cerulean: {
+                            DEFAULT: '#00a8e8',
+                            dark: '#007ba7',
+                            glow: 'rgba(0, 168, 232, 0.4)'
+                        },
+                        neonrose: {
+                            DEFAULT: '#ff007f',
+                            light: '#ff1493',
+                            glow: 'rgba(255, 0, 127, 0.4)'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['Space Grotesk', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0a0a0c;
+            color: #f3f4f6;
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glass-card {
+            background: rgba(18, 18, 22, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-nav {
+            background: rgba(10, 10, 12, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glow-hybrid {
+            box-shadow: -10px -10px 30px -5px rgba(0, 168, 232, 0.25), 10px 10px 30px -5px rgba(255, 0, 127, 0.25);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #00a8e8 0%, #ff007f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e1e28;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00a8e8;
+        }
+
+        #cursor-blur {
+            pointer-events: none;
+            position: fixed;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 168, 232, 0.12) 0%, rgba(255, 0, 127, 0.08) 50%, rgba(0,0,0,0) 70%);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, opacity 0.3s;
+            z-index: 9999;
+        }
+
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="bg-grid antialiased selection:bg-neonrose selection:text-white relative">
+
+    <!-- Interactive Cursor Glow -->
+    <div id="cursor-blur" class="hidden md:block"></div>
+
+    <!-- Notification Toast Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2"></div>
+
+    <!-- NAVBAR -->
+    <header class="fixed top-0 left-0 w-full z-40 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#hero" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cerulean to-neonrose p-[2px] transition-transform duration-300 group-hover:scale-105">
+                    <div class="w-full h-full bg-jet flex items-center justify-center rounded-[10px]">
+                        <span class="font-mono font-bold text-lg text-white">NP<span class="text-neonrose">.</span></span>
+                    </div>
+                </div>
+                <span class="font-mono font-bold tracking-wider text-lg hidden sm:inline-block">PURNIMA<span class="text-cerulean">.DEV</span></span>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="#about" class="text-sm font-medium text-gray-300 hover:text-cerulean transition-colors flex items-center gap-1">
+                    <span class="text-neonrose text-xs font-mono">01.</span> Experience
+                </a>
+                <a href="#projects" class="text-sm font-medium text-gray-300 hover:text-cerulean transition-colors flex items-center gap-1">
+                    <span class="text-neonrose text-xs font-mono">02.</span> Projects
+                </a>
+                <a href="#skills" class="text-sm font-medium text-gray-300 hover:text-cerulean transition-colors flex items-center gap-1">
+                    <span class="text-neonrose text-xs font-mono">03.</span> Skills
+                </a>
+                <a href="#education" class="text-sm font-medium text-gray-300 hover:text-cerulean transition-colors flex items-center gap-1">
+                    <span class="text-neonrose text-xs font-mono">04.</span> Education
+                </a>
+                <a href="#contact" class="text-sm font-medium text-gray-300 hover:text-cerulean transition-colors flex items-center gap-1">
+                    <span class="text-neonrose text-xs font-mono">05.</span> Contact
+                </a>
+            </nav>
+
+            <div class="hidden sm:flex items-center gap-4">
+                <a href="https://github.com/Purnima-nallamilli" target="_blank" class="px-4 py-2 text-xs font-mono font-semibold rounded-lg border border-cerulean/50 text-cerulean hover:bg-cerulean/10 hover:border-cerulean transition-all duration-300">
+                    <i class="fa-brands fa-github mr-1.5"></i> GitHub
+                </a>
+                <a href="#contact" class="px-4 py-2 text-xs font-mono font-semibold rounded-lg bg-neonrose text-white hover:bg-neonrose-light transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,0,127,0.5)]">
+                    Let's Connect
+                </a>
+            </div>
+
+            <button id="mobile-menu-btn" class="md:hidden text-2xl text-gray-300 hover:text-neonrose focus:outline-none">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden glass-card border-t border-jet-border px-6 py-6 space-y-4">
+            <a href="#about" class="mobile-link block text-base font-medium text-gray-300 hover:text-cerulean py-1">01. Experience</a>
+            <a href="#projects" class="mobile-link block text-base font-medium text-gray-300 hover:text-cerulean py-1">02. Projects</a>
+            <a href="#skills" class="mobile-link block text-base font-medium text-gray-300 hover:text-cerulean py-1">03. Skills</a>
+            <a href="#education" class="mobile-link block text-base font-medium text-gray-300 hover:text-cerulean py-1">04. Education</a>
+            <a href="#contact" class="mobile-link block text-base font-medium text-gray-300 hover:text-cerulean py-1">05. Contact</a>
+            <div class="pt-4 border-t border-jet-border flex flex-col gap-3">
+                <a href="https://github.com/Purnima-nallamilli" target="_blank" class="w-full py-2.5 text-xs font-mono font-semibold rounded-lg border border-cerulean text-cerulean text-center">
+                    <i class="fa-brands fa-github mr-1.5"></i> GitHub Profile
+                </a>
+                <a href="#contact" class="w-full py-2.5 text-xs font-mono font-semibold rounded-lg bg-neonrose text-white text-center">
+                    Contact Me
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="min-h-screen flex items-center pt-24 pb-12 relative overflow-hidden">
+        <div class="absolute top-1/4 left-10 w-96 h-96 bg-cerulean/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-10 right-10 w-96 h-96 bg-neonrose/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <div class="lg:col-span-7 space-y-6">
+                <!-- Status Badges -->
+                <div class="flex flex-wrap items-center gap-3">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-cerulean/30 bg-cerulean/10 text-cerulean text-xs font-mono">
+                        <span class="w-2 h-2 rounded-full bg-cerulean animate-ping"></span>
+                        B.Tech IT Final-Year Student
+                    </div>
+                    <div class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-neonrose/30 bg-neonrose/10 text-neonrose text-xs font-mono">
+                        <i class="fa-solid fa-graduation-cap"></i> CGPA: 9.29 / 10
+                    </div>
+                </div>
+
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight">
+                    Hi, I'm <span class="text-gradient">Nallamilli Purnima</span>
+                </h1>
+
+                <!-- Typewriter Container -->
+                <div class="text-xl sm:text-2xl font-mono text-gray-400 h-10 flex items-center">
+                    <span class="text-cerulean mr-2">&gt;</span>
+                    <span id="typewriter" class="text-white"></span>
+                    <span class="animate-pulse text-neonrose ml-1">|</span>
+                </div>
+
+                <p class="text-gray-400 text-base sm:text-lg max-w-2xl leading-relaxed">
+                    Final-year B.Tech (IT) student with hands-on experience building REST APIs, multi-agent AI systems, Graph RAG architectures, and responsive web applications. Proven problem solver with 250+ DSA challenges completed.
+                </p>
+
+                <div class="flex flex-wrap items-center gap-4 pt-4">
+                    <a href="#projects" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-cerulean to-cerulean-dark text-white font-medium text-sm flex items-center gap-2 hover:shadow-[0_0_25px_rgba(0,168,232,0.5)] transition-all duration-300">
+                        Explore My Projects <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </a>
+                    <a href="mailto:nallamillipurnima@gmail.com" class="px-6 py-3.5 rounded-xl border border-neonrose/50 text-neonrose hover:bg-neonrose/10 font-medium text-sm flex items-center gap-2 transition-all duration-300">
+                        Email Me <i class="fa-regular fa-paper-plane text-xs"></i>
+                    </a>
+                </div>
+
+                <!-- Quick Tech Highlights -->
+                <div class="pt-8 border-t border-jet-border flex items-center gap-6 text-gray-400 text-sm font-mono">
+                    <span>Key Stack:</span>
+                    <div class="flex items-center gap-4 text-xl">
+                        <i class="fa-brands fa-python text-amber-400 hover:scale-125 transition-transform" title="Python"></i>
+                        <i class="fa-solid fa-diagram-project text-cerulean hover:scale-125 transition-transform" title="LangGraph / Multi-Agent"></i>
+                        <i class="fa-solid fa-database text-neonrose hover:scale-125 transition-transform" title="Neo4j & Vector DBs"></i>
+                        <i class="fa-brands fa-react text-sky-400 hover:scale-125 transition-transform" title="React / Next.js"></i>
+                        <i class="fa-brands fa-java text-red-400 hover:scale-125 transition-transform" title="Java"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Terminal Hero Graphic -->
+            <div class="lg:col-span-5 flex justify-center">
+                <div class="relative w-full max-w-md">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-cerulean to-neonrose rounded-2xl blur-lg opacity-40 animate-pulse-slow"></div>
+
+                    <div class="relative glass-card rounded-2xl p-6 space-y-6 border border-white/10 glow-hybrid">
+                        <div class="flex items-center gap-4">
+                            <div class="relative">
+                                <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-cerulean to-neonrose p-[2px]">
+                                    <div class="w-full h-full bg-jet rounded-[14px] flex items-center justify-center">
+                                        <i class="fa-solid fa-user-astronaut text-2xl text-cerulean"></i>
+                                    </div>
+                                </div>
+                                <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-jet" title="Open for Roles"></div>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white">Nallamilli Purnima</h3>
+                                <p class="text-xs font-mono text-cerulean">AI & Software Engineer</p>
+                                <p class="text-xs text-gray-400 mt-1"><i class="fa-solid fa-location-dot text-neonrose mr-1"></i> Bhimavaram / Rajahmundry, IN</p>
+                            </div>
+                        </div>
+
+                        <!-- Code Terminal Box -->
+                        <div class="bg-jet rounded-xl p-4 font-mono text-xs border border-jet-border space-y-2">
+                            <div class="flex items-center justify-between pb-2 border-b border-jet-border">
+                                <div class="flex gap-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
+                                    <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></span>
+                                    <span class="w-2.5 h-2.5 rounded-full bg-green-500/80"></span>
+                                </div>
+                                <span class="text-gray-500 text-[10px]">profile_config.json</span>
+                            </div>
+                            <div class="text-gray-300">
+                                <span class="text-neonrose">const</span> <span class="text-cerulean">engineer</span> = {<br>
+                                &nbsp;&nbsp;cgpa: <span class="text-amber-300">'9.29 / 10'</span>,<br>
+                                &nbsp;&nbsp;dsaSolved: <span class="text-amber-300">'250+ Problems'</span>,<br>
+                                &nbsp;&nbsp;specialty: <span class="text-amber-300">'GenAI & Graph RAG'</span>,<br>
+                                &nbsp;&nbsp;cloudCertified: <span class="text-emerald-400">true</span><br>
+                                };
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-3 text-center">
+                            <div class="p-3 bg-jet/60 rounded-xl border border-jet-border">
+                                <span class="block text-xl font-bold text-cerulean font-mono">9.29</span>
+                                <span class="text-[10px] text-gray-400">Current CGPA</span>
+                            </div>
+                            <div class="p-3 bg-jet/60 rounded-xl border border-jet-border">
+                                <span class="block text-xl font-bold text-neonrose font-mono">250+</span>
+                                <span class="text-[10px] text-gray-400">DSA Solved</span>
+                            </div>
+                            <div class="p-3 bg-jet/60 rounded-xl border border-jet-border">
+                                <span class="block text-xl font-bold text-white font-mono">4+</span>
+                                <span class="text-[10px] text-gray-400">Core AI Projects</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- WORK EXPERIENCE SECTION -->
+    <section id="about" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            
+            <div class="flex flex-col items-center text-center mb-16 space-y-3">
+                <span class="text-xs font-mono text-neonrose uppercase tracking-widest">// Internship & Industry Work</span>
+                <h2 class="text-3xl sm:text-5xl font-bold text-white">Work Experience</h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-cerulean to-neonrose rounded-full mt-2"></div>
+            </div>
+
+            <div class="relative border-l-2 border-jet-border md:mx-auto max-w-4xl space-y-12 pl-6 md:pl-10">
+                <div class="relative group">
+                    <div class="absolute -left-[31px] md:-left-[47px] top-1.5 w-5 h-5 rounded-full bg-jet border-2 border-neonrose group-hover:bg-neonrose group-hover:shadow-[0_0_15px_#ff007f] transition-all duration-300"></div>
+
+                    <div class="glass-card rounded-2xl p-6 md:p-8 hover:border-cerulean/40 transition-all duration-300">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-white group-hover:text-cerulean transition-colors">AI & Cloud Computing Intern</h3>
+                                <p class="text-sm text-cerulean font-mono">Edunet Foundation (IBM Collaboration) • Remote</p>
+                            </div>
+                            <span class="inline-block px-3 py-1 rounded-full text-xs font-mono bg-cerulean/10 border border-cerulean/30 text-cerulean">
+                                Jul 2025 - Aug 2025
+                            </span>
+                        </div>
+
+                        <ul class="space-y-3 text-sm text-gray-300 mb-6">
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-caret-right text-neonrose mt-1"></i>
+                                <span>Built RESTful APIs using Python to support core backend functionality for AI-driven applications.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-caret-right text-neonrose mt-1"></i>
+                                <span>Troubleshot complex integration issues across software workflows and resolved critical API performance bottlenecks.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-caret-right text-neonrose mt-1"></i>
+                                <span>Leveraged Python AI tooling and pre-trained models to process and analyze structured/unstructured dataset workflows.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-caret-right text-neonrose mt-1"></i>
+                                <span>Initiated a self-driven local-LLM deployment beyond assigned internship scope to optimize data privacy and latency.</span>
+                            </li>
+                        </ul>
+
+                        <div class="flex flex-wrap gap-2 pt-2 border-t border-jet-border">
+                            <span class="px-2.5 py-1 text-[11px] font-mono rounded bg-jet border border-jet-border text-gray-300">Python</span>
+                            <span class="px-2.5 py-1 text-[11px] font-mono rounded bg-jet border border-jet-border text-gray-300">REST APIs</span>
+                            <span class="px-2.5 py-1 text-[11px] font-mono rounded bg-jet border border-jet-border text-gray-300">Local LLMs</span>
+                            <span class="px-2.5 py-1 text-[11px] font-mono rounded bg-jet border border-jet-border text-gray-300">IBM Cloud</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECTS SHOWCASE SECTION -->
+    <section id="projects" class="py-24 relative bg-jet/50">
+        <div class="max-w-7xl mx-auto px-6">
+            
+            <div class="flex flex-col items-center text-center mb-12 space-y-3">
+                <span class="text-xs font-mono text-cerulean uppercase tracking-widest">// GitHub Portfolio</span>
+                <h2 class="text-3xl sm:text-5xl font-bold text-white">Featured Projects</h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-neonrose to-cerulean rounded-full mt-2"></div>
+            </div>
+
+            <!-- Filter Controls -->
+            <div class="flex flex-wrap justify-center gap-2 mb-12" id="project-filters">
+                <button data-filter="all" class="filter-btn active px-5 py-2 rounded-xl text-xs font-mono transition-all duration-300 bg-gradient-to-r from-cerulean to-neonrose text-white font-semibold">
+                    All Projects
+                </button>
+                <button data-filter="genai" class="filter-btn px-5 py-2 rounded-xl text-xs font-mono transition-all duration-300 bg-jet border border-jet-border text-gray-400 hover:text-white hover:border-cerulean">
+                    GenAI & Agents
+                </button>
+                <button data-filter="web" class="filter-btn px-5 py-2 rounded-xl text-xs font-mono transition-all duration-300 bg-jet border border-jet-border text-gray-400 hover:text-white hover:border-cerulean">
+                    Web & Next.js
+                </button>
+            </div>
+
+            <!-- Projects Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="projects-grid">
+                
+                <!-- Project 1: Agent Flow AI -->
+                <div class="project-card glass-card rounded-2xl overflow-hidden border border-white/5 hover:border-cerulean/50 transition-all duration-300 group flex flex-col" data-category="genai">
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-1 rounded-full text-[10px] font-mono bg-neonrose/10 text-neonrose border border-neonrose/30">
+                                    Multi-Agent System
+                                </span>
+                                <a href="https://github.com/Purnima-nallamilli/agentflow-ai" target="_blank" class="text-gray-400 hover:text-cerulean transition-colors text-lg">
+                                    <i class="fa-brands fa-github"></i>
+                                </a>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white group-hover:text-cerulean transition-colors">Agent Flow AI</h3>
+                            <p class="text-xs text-gray-300 leading-relaxed">
+                                Multi-agent LinkedIn content pipeline (Writer &rarr; Reviewer &rarr; Editor &rarr; Scorer) built on LangGraph. Uses conditional edges to automatically route low-scoring drafts (&lt;8/10) back to the Editor for revision. Features state management via TypedDict and Memory Saver checkpointing with a Streamlit UI.
+                            </p>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-cerulean/10 text-cerulean border border-cerulean/20">LangGraph</span>
+                                <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-cerulean/10 text-cerulean border border-cerulean/20">Python</span>
+                                <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-cerulean/10 text-cerulean border border-cerulean/20">Streamlit</span>
+                                <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-cerulean/10 text-cerulean border border-cerulean/20">Gemini API</span>
+                            </div>
+
+                            <div class="flex items-center justify-between pt-4 border-t border-jet-border">
+                                <a href="https://github.com/Purnima-nallamilli/agentflow-ai" target="_blank" class="text-xs font-mono text-neonrose hover:underline flex items-center gap-1">
+                                    View Source Code <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2: RAG RBAC Chatbot -->
+                <div class="project-card glass-card rounded-2xl overflow-hidden border border-white/5 hover:border-neonrose/50 transition-all duration-300 group flex flex-col" data-category="genai">
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-1 rounded-full text-[10px] font-mono bg-cerulean/10 text-cerulean border border-cerulean/30">
+                                    Enterprise RAG & Security
+                                </span>
+                                <a href="https://github.com/Purnima-nallamilli/rag-rbac-chatbot" target="_blank" class="text-gray-400 hover:text-neonrose transition-colors text-lg">
+                                    <i class="fa-brands fa-github"></i>
+                                </a>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white group-hover:text-neonrose transition-colors">RAG RBAC Chatbot</h3>
+                            <p class="text-xs text-gray-300 leading-relaxed">
+                                Enterprise-grade Retrieval-Augmented Generation chatbot integrated with Role-Based Access Control (RBAC). Restricts document context and vector retrieval based on individual user authorization tier and organizational role.
+                            </p>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-neonrose/10 text-neonrose border border-neonrose/20">Python</span>
+                                <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-neonrose/10 text-neonrose border border-neonrose/20">LangChain</span>
+                                <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-neonrose/10 text-neonrose border border-neonrose/20">Vector DB</span>
+                                <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-neonrose/10 text-neonrose border border-neonrose/20">RBAC Security</span>
+                            </div>
+
+                            <div class="flex items-center justify-between pt-4 border-t border-jet-border">
+                                <a href="https://github.com/Purnima-nallamilli/rag-rbac-chatbot" target="_blank" class="text-xs font-mono text-cerulean hover:underline flex items-center gap-1">
+                                    View Source Code <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3: Graph-Based QA System -->
+                <div class="project-card glass-card rounded-2xl overflow-hidden border border-white/5 hover:border-cerulean/50 transition-all duration-300 group flex flex-col" data-category="genai">
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-1 rounded-full text-[10px] font-mono bg-cerulean/10 text-cerulean border border-cerulean/30">
+                                    Graph RAG & Knowledge Graph
+                                </span>
+                                <a href="https://github.com/Purnima-nallamilli/graph-based-question-answering-system" target="_blank" class="text-gray-400 hover:text-cerulean transition-colors text-lg">
+                                    <i class="fa-brands fa-github"></i>
+                                </a>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white group-hover:text-cerulean transition-colors">Graph-Based QA System</h3>
+                            <p class="text-xs text-gray-300 leading-relaxed">
+                                Ingested movie dataset into a 10-entity Neo4j knowledge graph. Traversed graph structures via Gemini-generated Cypher queries to answer multi-hop reasoning questions beyond Vector RAG limits. Benchmarked against ChromaDB Vector RAG.
+                            </p>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-cerulean/10 text-cerulean border border-cerulean/20">Neo4j Aura</span>
+                                <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-cerulean/10 text-cerulean border border-cerulean/20">Graph RAG</span>
+                                <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-cerulean/10 text-cerulean border border-cerulean/20">ChromaDB</span>
+                                <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-cerulean/10 text-cerulean border border-cerulean/20">Gemini API</span>
+                            </div>
+
+                            <div class="flex items-center justify-between pt-4 border-t border-jet-border">
+                                <a href="https://github.com/Purnima-nallamilli/graph-based-question-answering-system" target="_blank" class="text-xs font-mono text-neonrose hover:underline flex items-center gap-1">
+                                    View Source Code <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4: Personal Finance Tracker -->
+                <div class="project-card glass-card rounded-2xl overflow-hidden border border-white/5 hover:border-neonrose/50 transition-all duration-300 group flex flex-col" data-category="web">
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-1 rounded-full text-[10px] font-mono bg-neonrose/10 text-neonrose border border-neonrose/30">
+                                    Next.js Web Application
+                                </span>
+                                <a href="https://github.com/Purnima-nallamilli/Personal_Finance_tracker" target="_blank" class="text-gray-400 hover:text-neonrose transition-colors text-lg">
+                                    <i class="fa-brands fa-github"></i>
+                                </a>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white group-hover:text-neonrose transition-colors">Personal Finance Tracker</h3>
+                            <p class="text-xs text-gray-300 leading-relaxed">
+                                Responsive finance dashboard built with Next.js and TypeScript to track income, manage category-based budgets, and visualize spending through interactive Recharts analytics. Includes persistent storage and multi-currency support.
+                            </p>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-neonrose/10 text-neonrose border border-neonrose/20">Next.js</span>
+                                <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-neonrose/10 text-neonrose border border-neonrose/20">TypeScript</span>
+                                <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-neonrose/10 text-neonrose border border-neonrose/20">Tailwind CSS</span>
+                                <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-neonrose/10 text-neonrose border border-neonrose/20">Recharts</span>
+                            </div>
+
+                            <div class="flex items-center justify-between pt-4 border-t border-jet-border">
+                                <a href="https://github.com/Purnima-nallamilli/Personal_Finance_tracker" target="_blank" class="text-xs font-mono text-cerulean hover:underline flex items-center gap-1">
+                                    View Source Code <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SKILLS & EXPERTISE SECTION -->
+    <section id="skills" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            
+            <div class="flex flex-col items-center text-center mb-16 space-y-3">
+                <span class="text-xs font-mono text-neonrose uppercase tracking-widest">// Technical Proficiency</span>
+                <h2 class="text-3xl sm:text-5xl font-bold text-white">Skills & Competencies</h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-cerulean to-neonrose rounded-full mt-2"></div>
+            </div>
+
+            <!-- Skill Category Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- GenAI & Agentic AI -->
+                <div class="glass-card rounded-2xl p-6 border border-white/5 space-y-4 hover:border-cerulean/40 transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-cerulean/10 border border-cerulean/30 flex items-center justify-center text-cerulean text-lg">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">GenAI & Agentic AI</h3>
+                    <div class="flex flex-wrap gap-1.5 font-mono text-xs">
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">LangGraph</span>
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">Multi-Agent</span>
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">LangChain</span>
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">Graph RAG</span>
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">Vector RAG</span>
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">Prompt Eng.</span>
+                    </div>
+                </div>
+
+                <!-- Languages & CS Core -->
+                <div class="glass-card rounded-2xl p-6 border border-white/5 space-y-4 hover:border-neonrose/40 transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-neonrose/10 border border-neonrose/30 flex items-center justify-center text-neonrose text-lg">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">Languages & Fundamentals</h3>
+                    <div class="flex flex-wrap gap-1.5 font-mono text-xs">
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">Python</span>
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">C</span>
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">Java</span>
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">SQL</span>
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">DSA (250+)</span>
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">DBMS / OS</span>
+                    </div>
+                </div>
+
+                <!-- Databases & Vector Stores -->
+                <div class="glass-card rounded-2xl p-6 border border-white/5 space-y-4 hover:border-cerulean/40 transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-cerulean/10 border border-cerulean/30 flex items-center justify-center text-cerulean text-lg">
+                        <i class="fa-solid fa-database"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">Databases & Tools</h3>
+                    <div class="flex flex-wrap gap-1.5 font-mono text-xs">
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">Neo4j</span>
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">ChromaDB</span>
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">FAISS</span>
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">MySQL</span>
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">MongoDB</span>
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">Git / Linux</span>
+                    </div>
+                </div>
+
+                <!-- Web Development & APIs -->
+                <div class="glass-card rounded-2xl p-6 border border-white/5 space-y-4 hover:border-neonrose/40 transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-neonrose/10 border border-neonrose/30 flex items-center justify-center text-neonrose text-lg">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">Web & Frameworks</h3>
+                    <div class="flex flex-wrap gap-1.5 font-mono text-xs">
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">React.js</span>
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">Next.js</span>
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">Node / Express</span>
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">FastAPI</span>
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">Streamlit</span>
+                        <span class="px-2.5 py-1 rounded bg-jet border border-jet-border text-gray-300">Tailwind CSS</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- EDUCATION & CERTIFICATIONS SECTION -->
+    <section id="education" class="py-24 relative bg-jet/50">
+        <div class="max-w-7xl mx-auto px-6">
+            
+            <div class="flex flex-col items-center text-center mb-16 space-y-3">
+                <span class="text-xs font-mono text-cerulean uppercase tracking-widest">// Academic Background</span>
+                <h2 class="text-3xl sm:text-5xl font-bold text-white">Education & Certifications</h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-neonrose to-cerulean rounded-full mt-2"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Vishnu Institute of Tech -->
+                <div class="glass-card rounded-2xl p-6 border border-white/5 space-y-3 relative hover:border-cerulean/50 transition-all">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-mono text-cerulean">2023 - 2027</span>
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-cerulean/10 text-cerulean border border-cerulean/30">CGPA: 9.29 / 10</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">B.Tech in Information Technology</h3>
+                    <p class="text-sm text-gray-300">Vishnu Institute of Technology</p>
+                    <p class="text-xs text-gray-400"><i class="fa-solid fa-location-dot text-neonrose mr-1"></i> Bhimavaram, India</p>
+                </div>
+
+                <!-- Tirumala Mahila Junior Kalasala -->
+                <div class="glass-card rounded-2xl p-6 border border-white/5 space-y-3 relative hover:border-neonrose/50 transition-all">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-mono text-neonrose">2021 - 2023</span>
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-neonrose/10 text-neonrose border border-neonrose/30">97.5%</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Intermediate (MPC)</h3>
+                    <p class="text-sm text-gray-300">Tirumala Mahila Junior Kalasala</p>
+                    <p class="text-xs text-gray-400"><i class="fa-solid fa-location-dot text-cerulean mr-1"></i> Rajahmundry, India</p>
+                </div>
+
+                <!-- Certification -->
+                <div class="glass-card rounded-2xl p-6 border border-white/5 space-y-3 relative hover:border-cerulean/50 transition-all">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-mono text-emerald-400">Verified Certification</span>
+                        <i class="fa-solid fa-award text-amber-400 text-lg"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">OCI Foundations Associate</h3>
+                    <p class="text-sm text-gray-300">Oracle Cloud Infrastructure</p>
+                    <p class="text-xs text-gray-400">Validated core cloud architecture and enterprise technologies.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                
+                <div class="lg:col-span-5 space-y-6">
+                    <span class="text-xs font-mono text-neonrose uppercase tracking-widest">// Direct Contact</span>
+                    <h2 class="text-3xl sm:text-5xl font-bold text-white">Get In Touch</h2>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        I am actively seeking software engineering, AI engineering, and full-stack developer roles. Feel free to reach out via phone, email, or GitHub!
+                    </p>
+
+                    <div class="space-y-4 pt-2">
+                        <div class="glass-card p-4 rounded-xl flex items-center gap-4 border border-white/5">
+                            <div class="w-12 h-12 rounded-lg bg-cerulean/10 border border-cerulean/30 flex items-center justify-center text-cerulean text-lg">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <span class="block text-xs font-mono text-gray-400">Email Address</span>
+                                <button onclick="copyToClipboard('nallamillipurnima@gmail.com')" class="text-sm font-medium text-white hover:text-cerulean transition-colors flex items-center gap-2">
+                                    nallamillipurnima@gmail.com <i class="fa-regular fa-copy text-xs text-neonrose"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="glass-card p-4 rounded-xl flex items-center gap-4 border border-white/5">
+                            <div class="w-12 h-12 rounded-lg bg-neonrose/10 border border-neonrose/30 flex items-center justify-center text-neonrose text-lg">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <span class="block text-xs font-mono text-gray-400">Phone Number</span>
+                                <a href="tel:+919391630959" class="text-sm font-medium text-white hover:text-neonrose transition-colors">
+                                    +91 9391630959
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <span class="block text-xs font-mono text-gray-400 mb-3">Profiles & Coding Platforms</span>
+                        <div class="flex gap-3">
+                            <a href="https://github.com/Purnima-nallamilli" target="_blank" class="px-4 py-2 rounded-xl glass-card border border-white/10 flex items-center gap-2 text-xs font-mono text-gray-300 hover:text-cerulean hover:border-cerulean transition-all">
+                                <i class="fa-brands fa-github text-lg"></i> GitHub
+                            </a>
+                            <a href="https://leetcode.com" target="_blank" class="px-4 py-2 rounded-xl glass-card border border-white/10 flex items-center gap-2 text-xs font-mono text-gray-300 hover:text-amber-400 hover:border-amber-400 transition-all">
+                                <i class="fa-solid fa-code text-lg"></i> LeetCode
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7">
+                    <form id="contact-form" onsubmit="handleFormSubmit(event)" class="glass-card p-8 rounded-2xl border border-white/10 space-y-6 relative glow-hybrid">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-mono text-gray-300 mb-2">Name</label>
+                                <input type="text" required placeholder="Your Name" 
+                                       class="w-full px-4 py-3 rounded-xl bg-jet border border-jet-border text-white text-sm focus:outline-none focus:border-cerulean transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-mono text-gray-300 mb-2">Email</label>
+                                <input type="email" required placeholder="your.email@example.com" 
+                                       class="w-full px-4 py-3 rounded-xl bg-jet border border-jet-border text-white text-sm focus:outline-none focus:border-cerulean transition-all">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-mono text-gray-300 mb-2">Subject</label>
+                            <input type="text" required placeholder="Opportunity Inquiry / Project Collaborations" 
+                                   class="w-full px-4 py-3 rounded-xl bg-jet border border-jet-border text-white text-sm focus:outline-none focus:border-neonrose transition-all">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-mono text-gray-300 mb-2">Message</label>
+                            <textarea rows="5" required placeholder="Hello Purnima, I came across your portfolio..." 
+                                      class="w-full px-4 py-3 rounded-xl bg-jet border border-jet-border text-white text-sm focus:outline-none focus:border-cerulean transition-all resize-none"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-cerulean via-cerulean-dark to-neonrose text-white font-mono font-semibold text-sm hover:shadow-[0_0_25px_rgba(255,0,127,0.5)] transition-all duration-300">
+                            Send Message <i class="fa-solid fa-paper-plane ml-2"></i>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-8 border-t border-jet-border text-center text-xs text-gray-500 font-mono">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p>© 2026 Nallamilli Purnima. All Rights Reserved.</p>
+            <p class="flex items-center gap-1">
+                Engineered with <span class="text-neonrose">♥</span> Jet Black, Cerulean & Neon Rose.
+            </p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Typewriter Roles
+        const roles = [
+            "AI & Software Engineer",
+            "GenAI & LangGraph Specialist",
+            "Graph RAG & Vector Systems Architect",
+            "250+ DSA Problem Solver"
+        ];
+        let roleIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typewriterEl = document.getElementById("typewriter");
+
+        function type() {
+            const currentRole = roles[roleIndex];
+            if (isDeleting) {
+                typewriterEl.textContent = currentRole.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typewriterEl.textContent = currentRole.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            if (!isDeleting && charIndex === currentRole.length) {
+                isDeleting = true;
+                setTimeout(type, 2000);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                roleIndex = (roleIndex + 1) % roles.length;
+                setTimeout(type, 500);
+            } else {
+                setTimeout(type, isDeleting ? 40 : 80);
+            }
+        }
+        document.addEventListener("DOMContentLoaded", type);
+
+        // Mobile Menu
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Cursor Glow Follower
+        const cursorBlur = document.getElementById('cursor-blur');
+        document.addEventListener('mousemove', (e) => {
+            if(cursorBlur) {
+                cursorBlur.style.left = e.clientX + 'px';
+                cursorBlur.style.top = e.clientY + 'px';
+            }
+        });
+
+        // Project Filters
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-gradient-to-r', 'from-cerulean', 'to-neonrose', 'text-white', 'font-semibold');
+                    b.classList.add('bg-jet', 'border', 'border-jet-border', 'text-gray-400');
+                });
+
+                btn.classList.add('bg-gradient-to-r', 'from-cerulean', 'to-neonrose', 'text-white', 'font-semibold');
+                btn.classList.remove('bg-jet', 'border', 'border-jet-border', 'text-gray-400');
+
+                const filter = btn.getAttribute('data-filter');
+
+                projectCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Copy Email Helper
+        function copyToClipboard(text) {
+            const tempInput = document.createElement("input");
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            showToast("Copied email to clipboard!");
+        }
+
+        // Contact Form
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            showToast("Message sent successfully!");
+            event.target.reset();
+        }
+
+        // Toast System
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'glass-card border border-cerulean/50 text-white text-xs font-mono px-4 py-3 rounded-xl flex items-center gap-2 shadow-[0_0_15px_rgba(0,168,232,0.3)] transition-all duration-300 transform translate-y-2';
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-neonrose"></i> ${message}`;
+            
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-[-10px]');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
